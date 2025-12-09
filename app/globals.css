@@ -1,9 +1,12 @@
 @import "tailwindcss";
 
-/* Variantes customizadas */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Variant customizada para modo dark */
 @custom-variant dark (&:is(.dark *));
 
-/* Tokens base */
 :root {
   --background: oklch(0.15 0.05 142);
   --foreground: oklch(0.98 0 0);
@@ -27,23 +30,26 @@
   --radius: 0.625rem;
 }
 
-/* Tema inline do Tailwind v4 */
 @theme inline {
-  --font-sans: "Geist", "Geist Fallback";
-  --font-mono: "Geist Mono", "Geist Mono Fallback";
+  --font-sans: "Inter", sans-serif;
+  --font-mono: "Roboto Mono", monospace;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
 }
 
-/* CAMADA BASE – válida e aceita pelo Tailwind */
+
 @layer base {
   body {
     @apply bg-black text-white overflow-hidden m-0 p-0;
   }
 }
 
-/* Animações */
+
 @keyframes snowfall {
   0% {
     transform: translateY(-10vh) translateX(0) rotate(0deg);
@@ -58,32 +64,34 @@
 .snowflake {
   position: fixed;
   top: -10vh;
-  color: white;
   font-size: 1.2em;
+  color: white;
   opacity: 0.8;
   z-index: 999;
   animation: snowfall 8s linear forwards;
-  user-select: none;
   pointer-events: none;
-  text-shadow: 0 0 5px rgba(255,255,255,0.8);
+  user-select: none;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
 }
 
-/* Glassmorphism */
+
 .glass-panel {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
 }
 
-/* Glow */
+
+ 
 .text-glow {
-  text-shadow: 0 0 10px rgba(74, 222, 128, 0.5),
-               0 0 20px rgba(74, 222, 128, 0.3);
+  text-shadow: 
+    0 0 10px rgba(74, 222, 128, 0.5),
+    0 0 20px rgba(74, 222, 128, 0.3);
 }
 
-/* Christmas Lights */
+
 .christmas-lights {
   display: flex;
   justify-content: center;
@@ -120,7 +128,7 @@
 }
 
 .light-bulb::before {
-  content: '';
+  content: "";
   position: absolute;
   top: -5px;
   left: 3px;
@@ -149,6 +157,12 @@
 }
 
 @keyframes light-sway {
-  0% { transform: rotate(-5deg); opacity: 0.8; }
-  100% { transform: rotate(5deg); opacity: 1; }
+  0% {
+    transform: rotate(-5deg);
+    opacity: 0.8;
+  }
+  100% {
+    transform: rotate(5deg);
+    opacity: 1;
+  }
 }
