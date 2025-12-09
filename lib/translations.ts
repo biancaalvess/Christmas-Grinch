@@ -10,11 +10,11 @@ export const translations = {
     title: "O GRINCH",
     christmasSpecial: "Especial Natalino",
     watchTrailer: "Ver Trailer",
-    date: "25 de Dezembro, 2024",
+    date: "25 de Dezembro, 2025",
     quality: "4K Ultra HD",
     trailerLabel: "Assista ao Trailer",
     felizNatal: "Feliz Natal!",
-    footer: "ESPECIAL NATALINO 2024",
+    footer: "ESPECIAL NATALINO 2025",
     meanOne: "O Malvado",
   },
   en: {
@@ -28,11 +28,11 @@ export const translations = {
     title: "THE GRINCH",
     christmasSpecial: "Christmas Special",
     watchTrailer: "Watch Now",
-    date: "December 25, 2024",
+    date: "December 25, 2025",
     quality: "4K Ultra HD",
     trailerLabel: "Watch the Trailer",
     felizNatal: "Merry Christmas!",
-    footer: "CHRISTMAS SPECIAL 2024",
+    footer: "CHRISTMAS SPECIAL 2025",
     meanOne: "The Mean One",
   },
   es: {
@@ -46,13 +46,13 @@ export const translations = {
     title: "EL GRINCH",
     christmasSpecial: "Especial Navideño",
     watchTrailer: "Ver Ahora",
-    date: "25 de Diciembre, 2024",
+    date: "25 de Diciembre, 2025",
     quality: "4K Ultra HD",
     trailerLabel: "Ver el Tráiler",
     felizNatal: "¡Feliz Navidad!",
-    footer: "ESPECIAL NAVIDEÑO 2024",
+    footer: "ESPECIAL NAVIDEÑO 2025",
     meanOne: "El Malvado",
   },
-}
+} as const;
 
-export type Language = keyof typeof translations
+export type Language = keyof typeof translations;
