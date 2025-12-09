@@ -1,204 +1,134 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { ChevronLeft, ChevronRight, Play, Instagram, Twitter, Facebook } from "lucide-react"
-import Link from "next/link"
-import { useLanguage } from "@/lib/language-context"
-import { translations } from "@/lib/translations"
+import { useState, useEffect } from "react";
+import { Sparkles } from "lucide-react"; // Ícone para o botão
+import Image from "next/image";
 
-export default function GrinchLanding() {
-  const { language, setLanguage } = useLanguage()
-  const t = translations[language]
-  const [currentSlide, setCurrentSlide] = useState(1)
-  const [showSnowflakes, setShowSnowflakes] = useState(false)
+// Array com as imagens do Grinch
+const grinchImages = [
+  "/01.jpg",
+  "/02.jpg",
+  "/03.jpg",
+  "/04.jpg",
+  "/05.jpg",
+  "/06.jpg",
+  "/07.jpg",
+  "/08.jpg",
+];
 
+export default function GrinchCinematicSlide() {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [showSnowflakes, setShowSnowflakes] = useState(false);
+
+  // Função para criar o efeito de neve
   const createSnowflakes = () => {
-    setShowSnowflakes(true)
+    // Evita criar neve se não estiver no navegador
+    if (typeof document === "undefined") return;
 
+    setShowSnowflakes(true);
+
+    // Cria 50 flocos de neve
     for (let i = 0; i < 50; i++) {
-      const snowflake = document.createElement("div")
-      snowflake.className = "snowflake"
-      snowflake.textContent = "❄️"
-      snowflake.style.left = Math.random() * 100 + "%"
-      snowflake.style.animationDelay = Math.random() * 2 + "s"
-      snowflake.style.animationDuration = Math.random() * 4 + 6 + "s"
-      document.body.appendChild(snowflake)
+      const snowflake = document.createElement("div");
+      snowflake.className = "snowflake";
+      snowflake.textContent = "❄️";
+      // Posição aleatória na largura da tela
+      snowflake.style.left = Math.random() * 100 + "%";
+      // Atraso aleatório para parecer natural
+      snowflake.style.animationDelay = Math.random() * 2 + "s";
+      // Duração aleatória da queda
+      snowflake.style.animationDuration = Math.random() * 4 + 6 + "s";
+      document.body.appendChild(snowflake);
 
-      setTimeout(() => snowflake.remove(), (Math.random() * 4 + 6) * 1000)
+      // Remove o elemento do DOM após a animação
+      setTimeout(() => snowflake.remove(), (Math.random() * 4 + 6) * 1000);
     }
 
-    setTimeout(() => setShowSnowflakes(false), 3000)
-  }
+    // Reseta o estado após alguns segundos (opcional)
+    setTimeout(() => setShowSnowflakes(false), 3000);
+  };
 
-  const slides = [
-    { id: 1, title: "The Grinch" },
-    { id: 2, title: "Holiday Magic" },
-    { id: 3, title: "Christmas Story" },
-    { id: 4, title: "Winter Spirit" },
-    { id: 5, title: "Festive Tale" },
-  ]
+  // Efeito de Slideshow Automático Lento
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % grinchImages.length);
+    }, 6000); // Troca a cada 6 segundos (mais lento para apreciar a imagem)
 
-  const nextSlide = () => {
-    setCurrentSlide(currentSlide === slides.length ? 1 : currentSlide + 1)
-  }
-
-  const prevSlide = () => {
-    setCurrentSlide(currentSlide === 1 ? slides.length : currentSlide - 1)
-  }
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-700 via-red-600 to-red-700 text-green-600 overflow-hidden flex flex-col">
-      <div className="absolute top-4 right-4 z-50 flex gap-2">
-        <button
-          onClick={() => setLanguage("pt")}
-          className={`px-3 py-1 text-xs font-semibold rounded transition-colors ${
-            language === "pt" ? "bg-green-600 text-white" : "bg-red-600/50 text-green-400 hover:bg-red-600"
-          }`}
-        >
-          PT
-        </button>
-        <button
-          onClick={() => setLanguage("en")}
-          className={`px-3 py-1 text-xs font-semibold rounded transition-colors ${
-            language === "en" ? "bg-green-600 text-white" : "bg-red-600/50 text-green-400 hover:bg-red-600"
-          }`}
-        >
-          EN
-        </button>
-        <button
-          onClick={() => setLanguage("es")}
-          className={`px-3 py-1 text-xs font-semibold rounded transition-colors ${
-            language === "es" ? "bg-green-600 text-white" : "bg-red-600/50 text-green-400 hover:bg-red-600"
-          }`}
-        >
-          ES
-        </button>
+    <main className="relative min-h-screen w-full overflow-hidden bg-black">
+      
+      {/* CAMADA 1: Slideshow de Fundo */}
+      <div className="absolute inset-0 z-0">
+        {grinchImages.map((src, index) => (
+          <div
+            key={src}
+            // 'duration-[2000ms]' cria uma transição bem lenta e suave de 2 segundos
+            className={`absolute inset-0 transition-opacity ease-in-out duration-[2000ms] ${
+              index === currentImageIndex ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            <Image
+              src={src}
+              alt="Grinch Background"
+              fill
+              className="object-cover brightness-[0.5]" // Imagem escurecida para destacar o texto
+              priority={index === 0}
+            />
+          </div>
+        ))}
+        {/* Overlay sutil para textura */}
+        <div className="absolute inset-0 bg-black/10 mix-blend-overlay pointer-events-none" style={{backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.8\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\' opacity=\'0.3\'/%3E%3C/svg%3E")'}}></div>
       </div>
 
-      {showSnowflakes && <div className="feliz-natal">{t.felizNatal}</div>}
-
-      {/* Header */}
-      <header className="flex items-center justify-between px-4 sm:px-6 md:px-8 py-4 sm:py-6 border-b border-green-500/30">
-        <div className="flex items-center gap-2">
-          <div className="w-6 sm:w-8 h-6 sm:h-8 bg-green-600 rounded-sm flex items-center justify-center flex-shrink-0">
-            <span className="text-white font-bold text-xs sm:text-sm">🎄</span>
-          </div>
-          <span className="text-sm sm:text-lg font-bold tracking-wider text-green-600">{t.logo}</span>
-        </div>
-
-        <nav className="hidden md:flex items-center gap-4 lg:gap-8 text-xs lg:text-sm tracking-wide text-green-500">
-          <Link href="#" className="hover:text-green-700 transition-colors">
-            {t.navHome}
-          </Link>
-          <Link href="#" className="hover:text-green-700 transition-colors">
-            {t.navStory}
-          </Link>
-          <Link href="#" className="hover:text-green-700 transition-colors">
-            {t.navGallery}
-          </Link>
-          <Link href="#" className="hover:text-green-700 transition-colors">
-            {t.navExperience}
-          </Link>
-        </nav>
-
-        <button className="px-3 sm:px-6 py-2 bg-green-600 text-white rounded-sm font-semibold hover:bg-green-700 transition-colors text-xs sm:text-sm">
-          {t.watchNow}
-        </button>
-      </header>
-
-      {/* Main Content */}
-      <main className="flex-1 flex flex-col lg:flex-row items-center justify-between px-4 sm:px-6 md:px-8 py-6 sm:py-12 gap-6 lg:gap-0">
-        {/* Left Section */}
-        <div className="w-full lg:w-1/2 flex flex-col justify-center">
-          <p className="text-xs sm:text-sm text-green-500/70 mb-2 sm:mb-4 tracking-widest">{t.character}</p>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 tracking-wider leading-tight text-green-600">
-            {t.title}
+      {/* CAMADA 2: Conteúdo Lateral */}
+      <div className="relative z-10 h-screen w-full flex flex-col justify-center px-8 md:px-16 lg:px-24">
+        
+        {/* Container do Texto (Alinhado à Esquerda) */}
+        <div className="max-w-2xl space-y-6 animate-fade-in">
+          
+          {/* Título */}
+          <h1 className="text-white font-bold text-5xl md:text-7xl lg:text-8xl tracking-tight drop-shadow-2xl leading-none">
+            FELIZ NATAL <br />
+            <span className="text-green-500">DO GRINCH</span>
           </h1>
 
-          <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
+          {/* Texto Simples / Descrição */}
+          <p className="text-gray-200 text-lg md:text-xl lg:text-2xl font-light leading-relaxed max-w-lg drop-shadow-md border-l-4 border-green-500 pl-4">
+            Talvez o Natal não venha de uma loja.<br/>
+            Talvez o Natal... signifique um pouco mais.
+          </p>
+
+          {/* Botão de Efeito Especial */}
+          <div className="pt-4">
             <button
               onClick={createSnowflakes}
-              className="px-4 sm:px-6 py-2 sm:py-3 bg-green-600 text-white rounded-sm font-semibold hover:bg-green-700 transition-colors text-xs sm:text-sm whitespace-nowrap"
+              className="group flex items-center gap-3 px-8 py-4 bg-white/10 hover:bg-green-600 backdrop-blur-md border border-white/20 hover:border-green-500 text-white rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(0,0,0,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.4)]"
             >
-              {t.christmasSpecial}
+              <span className="font-semibold tracking-widest text-sm uppercase">
+                Ativar Magia
+              </span>
+              <Sparkles className="w-5 h-5 group-hover:animate-spin" />
             </button>
-            <span className="text-xs sm:text-sm text-green-400">{t.watchTrailer}</span>
           </div>
 
-          <div className="mb-8 sm:mb-12 text-xs sm:text-sm text-green-400 space-y-1">
-            <p>{t.date}</p>
-            <p>{t.quality}</p>
-          </div>
-
-          <div className="flex gap-4">
-            <Link href="#" className="text-green-400 hover:text-green-600 transition-colors">
-              <Instagram size={20} />
-            </Link>
-            <Link href="#" className="text-green-400 hover:text-green-600 transition-colors">
-              <Twitter size={20} />
-            </Link>
-            <Link href="#" className="text-green-400 hover:text-green-600 transition-colors">
-              <Facebook size={20} />
-            </Link>
-          </div>
         </div>
-
-        {/* Right Section - Character and Player */}
-        <div className="w-full lg:w-1/2 relative flex flex-col items-center justify-center">
-          <div className="relative w-full max-w-xs sm:max-w-md lg:max-w-none lg:h-80 flex items-center justify-center mb-6 sm:mb-12">
-            <div className="absolute inset-0 bg-gradient-to-b from-green-600/20 to-transparent rounded-lg"></div>
-
-            <div className="relative z-10 flex flex-col items-center justify-center w-40 sm:w-64 h-40 sm:h-64 bg-red-600/30 rounded-lg border border-green-500/30">
-              <span className="text-4xl sm:text-6xl mb-2">👹</span>
-              <p className="text-xs sm:text-sm text-green-500">{t.meanOne}</p>
-            </div>
-
-            <div className="absolute bottom-0 right-2 sm:right-8 bg-green-600 text-white rounded-full p-3 sm:p-4 shadow-lg hover:scale-110 transition-transform cursor-pointer hover:bg-green-700">
-              <Play size={20} className="sm:w-6 sm:h-6" fill="currentColor" />
-            </div>
-          </div>
-
-          <p className="text-xs text-green-400 tracking-widest mb-6 sm:mb-8">{t.trailerLabel}</p>
-
-          {/* Slide Navigation */}
-          <div className="flex items-center gap-2 sm:gap-4 overflow-x-auto">
-            <button
-              onClick={prevSlide}
-              className="p-2 hover:bg-red-600 rounded-sm transition-colors hover:text-green-600 flex-shrink-0"
-            >
-              <ChevronLeft size={20} />
-            </button>
-
-            <div className="flex gap-1 sm:gap-2">
-              {slides.map((slide) => (
-                <button
-                  key={slide.id}
-                  onClick={() => setCurrentSlide(slide.id)}
-                  className={`px-2 sm:px-3 py-1 rounded-sm text-xs sm:text-sm font-semibold transition-all ${
-                    currentSlide === slide.id
-                      ? "bg-green-600 text-white"
-                      : "bg-red-700/50 text-green-500 hover:bg-red-700"
-                  }`}
-                >
-                  {String(slide.id).padStart(2, "0")}
-                </button>
-              ))}
-            </div>
-
-            <button
-              onClick={nextSlide}
-              className="p-2 hover:bg-red-600 rounded-sm transition-colors hover:text-green-600 flex-shrink-0"
-            >
-              <ChevronRight size={20} />
-            </button>
-          </div>
-        </div>
-      </main>
-
-      {/* Footer Accent */}
-      <div className="flex justify-center py-3 sm:py-4 border-t border-green-500/30">
-        <p className="text-xs tracking-widest text-green-600">🎄 {t.footer} 🎄</p>
       </div>
-    </div>
-  )
+
+      {/* Indicador de Slide (Discreto no fundo) */}
+      <div className="absolute bottom-8 right-8 z-20 flex gap-2">
+        {grinchImages.map((_, idx) => (
+          <div 
+            key={idx}
+            className={`h-1 rounded-full transition-all duration-500 ${
+              idx === currentImageIndex ? "w-8 bg-green-500" : "w-2 bg-white/30"
+            }`}
+          />
+        ))}
+      </div>
+
+    </main>
+  );
 }
