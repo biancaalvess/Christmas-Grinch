@@ -1,18 +1,19 @@
 @import "tailwindcss";
 
+/* Variantes customizadas */
 @custom-variant dark (&:is(.dark *));
 
+/* Tokens base */
 :root {
-  /* Tema base atualizado para o estilo noturno/mágico */
-  --background: oklch(0.15 0.05 142); /* Verde escuro/Azulado */
+  --background: oklch(0.15 0.05 142);
   --foreground: oklch(0.98 0 0);
   --card: oklch(0.2 0.05 142);
   --card-foreground: oklch(0.98 0 0);
   --popover: oklch(0.15 0.05 142);
   --popover-foreground: oklch(0.98 0 0);
-  --primary: oklch(0.55 0.2 142); /* Verde Grinch vibrante */
+  --primary: oklch(0.55 0.2 142);
   --primary-foreground: oklch(0.98 0 0);
-  --secondary: oklch(0.92 0.18 56); /* Vermelho acento */
+  --secondary: oklch(0.92 0.18 56);
   --secondary-foreground: oklch(0.12 0 0);
   --muted: oklch(0.35 0 0);
   --muted-foreground: oklch(0.8 0 0);
@@ -26,22 +27,23 @@
   --radius: 0.625rem;
 }
 
+/* Tema inline do Tailwind v4 */
 @theme inline {
   --font-sans: "Geist", "Geist Fallback";
   --font-mono: "Geist Mono", "Geist Mono Fallback";
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-primary: var(--primary);
-  /* ... outras variáveis mantidas ... */
 }
 
+/* CAMADA BASE – válida e aceita pelo Tailwind */
 @layer base {
   body {
     @apply bg-black text-white overflow-hidden m-0 p-0;
   }
 }
 
-/* Animação para a Neve (Efeito Especial) */
+/* Animações */
 @keyframes snowfall {
   0% {
     transform: translateY(-10vh) translateX(0) rotate(0deg);
@@ -57,25 +59,6 @@
   position: fixed;
   top: -10vh;
   color: white;
-  font-size: 1.5em;
-  opacity: 1;
-  z-index: 9999; /* Z-index alto para ficar acima de tudo */
-  animation: snowfall 8s linear forwards;
-  user-select: none;
-  pointer-events: none;
-  text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
-}
-
-/* Animação de Neve */
-@keyframes snowfall {
-  0% { transform: translateY(-10vh) translateX(0) rotate(0deg); opacity: 1; }
-  100% { transform: translateY(100vh) translateX(100px) rotate(360deg); opacity: 0; }
-}
-
-.snowflake {
-  position: fixed;
-  top: -10vh;
-  color: white;
   font-size: 1.2em;
   opacity: 0.8;
   z-index: 999;
@@ -85,7 +68,7 @@
   text-shadow: 0 0 5px rgba(255,255,255,0.8);
 }
 
-/* Efeito Glassmorphism (Vidro Fosco) */
+/* Glassmorphism */
 .glass-panel {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(12px);
@@ -94,12 +77,13 @@
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 }
 
-/* Efeito de brilho no texto */
+/* Glow */
 .text-glow {
-  text-shadow: 0 0 10px rgba(74, 222, 128, 0.5), 0 0 20px rgba(74, 222, 128, 0.3);
+  text-shadow: 0 0 10px rgba(74, 222, 128, 0.5),
+               0 0 20px rgba(74, 222, 128, 0.3);
 }
 
-/* Luzes de Natal */
+/* Christmas Lights */
 .christmas-lights {
   display: flex;
   justify-content: center;
