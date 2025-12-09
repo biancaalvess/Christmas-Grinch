@@ -8,8 +8,11 @@ const geist = Geist({ subsets: ["latin"] })
 const geistMono = Geist_Mono({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Galeria Criativa",
+  title: "Feliz Natal do Grinch",
   description: "Uma experiência visual imersiva",
+  icons: {
+    icon: "/icon.png", 
+  },
 }
 
 export default function RootLayout({
